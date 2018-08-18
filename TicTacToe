@@ -1,0 +1,91 @@
+from __future__ import print_function
+# from IPython.display import clear_output
+from random import randint
+from time import sleep
+from os import system, name
+
+
+def display_board(board):
+    "This function will show the TIC TAC TOE game board"""
+    # s = ['x','o','x','x','o','o','x','x','o','o']
+    # clear_output()
+    system('cls' if name == 'nt' else 'clear')
+    b = list(board)
+    print("\n %s | %s | %s " % (b[0], b[1], b[2]))
+
+    print("-----------")
+    print(" %s | %s | %s " % (b[3], b[4], b[5]))
+    print("-----------")
+    print(" %s | %s | %s " % (b[6], b[7], b[8]))
+
+
+# def get_input(p, player):
+#     return input("player %s turn, Enter valid range (0-8) : \n" % (player[p]))
+
+def draw_board(board, player, p):
+    # p = input("Enter player 0 or 1 : \n")
+    i = int(input("Player '%s's turn, Enter valid range (0-8) : \n" % (player[p])))
+    while i not in range(0, 8):
+        i = int(input("Warning! Range should be from 0 to 8 : \n"))
+
+    while board[i] in player:
+        print("Board %d is already placed as %s \n" % (i, board[i]))
+        i = int(input("Enter valid range apart from that already filled (0-8) :\n "))
+    board[i] = player[p]
+
+
+def win_check(board, player):
+    if board[0] == board[1] == board[2] and board[1] in player:
+        return board[1]
+    elif board[3] == board[4] == board[5] and board[4] in player:
+        return board[4]
+    elif board[6] == board[7] == board[8] and board[7] in player:
+        return board[7]
+    elif board[0] == board[3] == board[6] and board[3] in player:
+        return board[3]
+    elif board[1] == board[4] == board[7] and board[1] in player:
+        return board[1]
+    elif board[2] == board[5] == board[8] and board[2] in player:
+        return board[2]
+    elif board[0] == board[4] == board[8] and board[0] in player:
+        return board[0]
+    elif board[2] == board[4] == board[6] and board[2] in player:
+        return board[2]
+    elif ' ' in board:
+        return ' '
+    else:
+        return "tie"
+
+
+def ttt():
+    """
+    This is Tic Tac Toe X and O game, wanna play? Give a try
+    :rtype: none
+    """
+    play_again = True
+    while play_again:
+        s = (0, 1, 2, 3, 4, 5, 6, 7, 8)
+        print("Below is the sample board")
+        print(" %s | %s | %s " % (s[0], s[1], s[2]))
+        print("-----------")
+        print(" %s | %s | %s " % (s[3], s[4], s[5]))
+        print("-----------")
+        print(" %s | %s | %s " % (s[6], s[7], s[8]))
+        player = ['X', 'O']
+        board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+        print ("Please decide yourself X or O \n Game Will Start in another 5 Secs \n")
+        #sleep(5)
+        p = randint(0,1)
+        while win_check(board, player) == " ":
+            if p == 0:
+                p = 1
+            else:
+                p = 0
+            draw_board(board, player, p)
+            display_board(board)
+        print("Bravo :-) You Nailed it bro! %s " % (win_check(board, player)))
+        play_again = input("Wanna play again 'Y' or N :").upper().startswith('Y')
+
+# Start Game
+
+ttt()
